@@ -28,7 +28,7 @@ public class Main extends Application {
 	        primaryStage.setScene(scene);
 	        SampleController controller = fxmlLoader.getController();   //获取Controller的实例对象
 	        //Controller中写的初始化方法
-	        controller.init();
+	        controller.init(scene);
 	        primaryStage.show();
 		} catch (Exception e) {
 			e.printStackTrace();

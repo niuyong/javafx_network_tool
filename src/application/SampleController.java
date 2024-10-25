@@ -1,5 +1,6 @@
 package application;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -23,13 +24,18 @@ import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.HBox;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 
 public class SampleController {
 	@FXML
@@ -56,6 +62,8 @@ public class SampleController {
 	private TextArea sendTextArea;
 	@FXML
 	private CheckBox autoRecvCheckBox;
+	@FXML
+	private Label fileimport;
 
 	private String[] agreementArray = new String[] { "TCP Server", "TCP Client" };
 	private String[] timeUnitArray = new String[] { "毫秒", "秒" };
@@ -64,7 +72,7 @@ public class SampleController {
 	private OutputStream outputStream;
 	private ServerSocket serverSocket;
 
-	public void init() {
+	public void init(Scene scene) {
 		agreement.getItems().addAll(agreementArray);
 		agreement.getSelectionModel().select(0);
 
@@ -121,6 +129,17 @@ public class SampleController {
 				e.consume();// 如果不是数字则取消
 			}
 		});
+		
+		FileChooser chooser=new FileChooser();
+        chooser.setInitialDirectory(new File("C:\\developer\\Java"));   //设置初始路径，默认为我的电脑
+        chooser.setTitle("打开文件");                //设置窗口标题，默认为“打开”
+        chooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("TXT", "*.txt"),
+                                             new FileChooser.ExtensionFilter("LOG", "*.log"));
+        
+        fileimport.setOnMouseReleased(e -> {
+        	Stage stage = (Stage) scene.getWindow();
+        	chooser.showOpenDialog(stage);
+        });
 	}
 
 	public class MyServer extends Thread {
