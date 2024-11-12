@@ -11,7 +11,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.JavaFXBuilderFactory;
 
 
-public class Main extends Application {
+public class SampleApplication extends Application {
 	@Override
 	public void start(Stage primaryStage) {
 		try {
@@ -26,6 +26,7 @@ public class Main extends Application {
 	        //加载css样式
 	        scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 	        primaryStage.setScene(scene);
+			primaryStage.setResizable(false);
 	        SampleController controller = fxmlLoader.getController();   //获取Controller的实例对象
 	        //Controller中写的初始化方法
 	        controller.init(scene);

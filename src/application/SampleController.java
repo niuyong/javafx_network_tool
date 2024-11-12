@@ -31,6 +31,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import org.apache.commons.validator.routines.InetAddressValidator;
 
 public class SampleController {
     @FXML
@@ -52,6 +53,8 @@ public class SampleController {
     @FXML
     private TextField portField;
     @FXML
+    private TextField remoteIP;
+    @FXML
     private TextArea recvTextArea;
     @FXML
     private TextArea sendTextArea;
@@ -59,6 +62,10 @@ public class SampleController {
     private CheckBox autoRecvCheckBox;
     @FXML
     private Label fileimport;
+    @FXML
+    private Label ipLabel;
+    @FXML
+    private Label portLabel;
     @FXML
     private ChoiceBox contentAgreement;
     @FXML
@@ -68,6 +75,11 @@ public class SampleController {
     private String[] timeUnitArray = new String[]{"毫秒", "秒"};
     private String[] encodingArray = new String[]{"UTF-8", "HEX"};
     private String[] contentAgreementArray = new String[]{"无协议", "协议一", "协议二", "协议三"};
+
+    private static final InetAddressValidator VALIDATOR = InetAddressValidator.getInstance();
+    public static boolean isValidIPV4ByValidator(String inetAddress) {
+        return VALIDATOR.isValidInet4Address(inetAddress);
+    }
 
     private OutputStream outputStream;
     private ServerSocket serverSocket;
@@ -96,11 +108,17 @@ public class SampleController {
         }
 
         openBtn.setOnAction(actionEvent -> {
+            if (agreement.getSelectionModel().getSelectedItem().equals(agreementArray[1]) && !isValidIPV4ByValidator(remoteIP.getText())) {
+                Alert alert = new Alert(AlertType.WARNING);
+                alert.setTitle("警告");
+                alert.setHeaderText("请填写正确的服务器IP地址！");
+                alert.showAndWait();
+                return;
+            }
             if (portField.getText().trim().length() == 0) {
                 Alert alert = new Alert(AlertType.WARNING);
                 alert.setTitle("警告");
                 alert.setHeaderText("请填写端口号！");
-
                 alert.showAndWait();
                 return;
             }
@@ -110,11 +128,12 @@ public class SampleController {
             agreement.setDisable(true);
             sendBtn.setDisable(false);
             localIP.setDisable(true);
+            remoteIP.setDisable(true);
 
-            if (agreement.getSelectionModel().getSelectedItem().toString().equals("TCP Server")) {
+            if (agreement.getSelectionModel().getSelectedItem().equals(agreementArray[0])) {
                 MyServer myServer = new MyServer();
                 myServer.start();
-            } else if (agreement.getSelectionModel().getSelectedItem().toString().equals("TCP Client")) {
+            } else if (agreement.getSelectionModel().getSelectedItem().equals(agreementArray[1])) {
                 MyClient myClient = new MyClient();
                 myClient.start();
             }
@@ -127,6 +146,7 @@ public class SampleController {
             agreement.setDisable(false);
             sendBtn.setDisable(true);
             localIP.setDisable(false);
+            remoteIP.setDisable(false);
 
             try {
                 serverSocket.close();
@@ -152,7 +172,7 @@ public class SampleController {
         });
 
         FileChooser chooser = new FileChooser();
-        chooser.setInitialDirectory(new File("C:\\developer\\Java")); // 设置初始路径，默认为我的电脑
+        chooser.setInitialDirectory(new File("./")); // 设置初始路径，默认为我的电脑
         chooser.setTitle("打开文件"); // 设置窗口标题，默认为“打开”
         chooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("TXT", "*.txt"),
                 new FileChooser.ExtensionFilter("LOG", "*.log"));
@@ -161,6 +181,22 @@ public class SampleController {
             Stage stage = (Stage) scene.getWindow();
             chooser.showOpenDialog(stage);
         });
+
+        agreement.setOnAction(e -> getChoice());
+    }
+
+    private void getChoice() {
+        if (agreement.getSelectionModel().getSelectedItem().equals(agreementArray[0])) {//TCP Server
+            ipLabel.setText("本地IP地址");
+            portLabel.setText("本地端口号");
+            localIP.setVisible(true);
+            remoteIP.setVisible(false);
+        } else if (agreement.getSelectionModel().getSelectedItem().equals(agreementArray[1])) {//TCP Client
+            ipLabel.setText("服务器IP地址");
+            portLabel.setText("服务器端口号");
+            localIP.setVisible(false);
+            remoteIP.setVisible(true);
+        }
     }
 
     public class MyClient extends Thread {
@@ -172,7 +208,7 @@ public class SampleController {
             try {
                 Socket socket = new Socket();
                 int port = Integer.parseInt(portField.getText());
-                SocketAddress socketAddress = new InetSocketAddress(localIP.getSelectionModel().getSelectedItem().toString(), port);
+                SocketAddress socketAddress = new InetSocketAddress(remoteIP.getText(), port);
                 socket.connect(socketAddress, 1000);
                 new InputThread(socket).start();
             } catch (IOException e) {
