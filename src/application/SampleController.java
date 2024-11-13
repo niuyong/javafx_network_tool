@@ -75,6 +75,7 @@ public class SampleController {
     private String[] timeUnitArray = new String[]{"毫秒", "秒"};
     private String[] encodingArray = new String[]{"UTF-8", "HEX"};
     private String[] contentAgreementArray = new String[]{"无协议", "协议一", "协议二", "协议三"};
+    private final SimpleDateFormat sdf = new SimpleDateFormat(" yyyy-MM-dd HH:mm:ss.SSS");
 
     private static final InetAddressValidator VALIDATOR = InetAddressValidator.getInstance();
     public static boolean isValidIPV4ByValidator(String inetAddress) {
@@ -122,13 +123,7 @@ public class SampleController {
                 alert.showAndWait();
                 return;
             }
-            openBtn.setDisable(true);
-            closeBtn.setDisable(false);
-            portField.setEditable(false);
-            agreement.setDisable(true);
-            sendBtn.setDisable(false);
-            localIP.setDisable(true);
-            remoteIP.setDisable(true);
+            setFunctionDiabled(true);
 
             if (agreement.getSelectionModel().getSelectedItem().equals(agreementArray[0])) {
                 MyServer myServer = new MyServer();
@@ -140,13 +135,7 @@ public class SampleController {
         });
 
         closeBtn.setOnAction(actionEvent -> {
-            openBtn.setDisable(false);
-            closeBtn.setDisable(true);
-            portField.setEditable(true);
-            agreement.setDisable(false);
-            sendBtn.setDisable(true);
-            localIP.setDisable(false);
-            remoteIP.setDisable(false);
+            setFunctionDiabled(false);
 
             try {
                 serverSocket.close();
@@ -185,6 +174,18 @@ public class SampleController {
         agreement.setOnAction(e -> getChoice());
     }
 
+    private void setFunctionDiabled(boolean disabled) {
+        openBtn.setDisable(disabled);
+        closeBtn.setDisable(!disabled);
+        portField.setDisable(disabled);
+        agreement.setDisable(disabled);
+        sendBtn.setDisable(!disabled);
+        localIP.setDisable(disabled);
+        remoteIP.setDisable(disabled);
+//        receiveEncoding.setDisable(disabled);
+//        sendEncoding.setDisable(disabled);
+    }
+
     private void getChoice() {
         if (agreement.getSelectionModel().getSelectedItem().equals(agreementArray[0])) {//TCP Server
             ipLabel.setText("本地IP地址");
@@ -200,8 +201,6 @@ public class SampleController {
     }
 
     public class MyClient extends Thread {
-
-        private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
         @Override
         public void run() {
@@ -219,8 +218,6 @@ public class SampleController {
 
     public class MyServer extends Thread {
 
-        private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-
         @Override
         public void run() {
             try {
@@ -237,6 +234,7 @@ public class SampleController {
                     new InputThread(clientSocket).start();
                 }
             } catch (Exception e) {
+                setFunctionDiabled(false);
                 e.printStackTrace();
             }
         }
@@ -274,13 +272,19 @@ public class SampleController {
                 while ((bytesRead = inputStream.read(buf)) != -1) {
                     // 读取客户端发送的数据
                     String text = sendTextArea.getText();
-                    if (autoRecvCheckBox.isSelected()) {// 如果被选中，则自动回复
+                    if (autoRecvCheckBox.isSelected() && agreement.getSelectionModel().getSelectedItem().equals(agreementArray[0])) {// 如果被选中，则自动回复
                         outputStream.write(text.getBytes(StandardCharsets.UTF_8));
                     }
 
                     if (contentAgreement.getSelectionModel().getSelectedIndex() == 0) {//无协议
-                        String receivedMessage = new String(buf, 0, bytesRead, StandardCharsets.UTF_8);
-                        recvTextArea.appendText(socketAddress + "\r\n" + receivedMessage + "\r\n");
+                        String receivedMessage = null;
+                        if (receiveEncoding.getSelectionModel().getSelectedItem().equals(encodingArray[0])) {//UTF-8
+                            receivedMessage = new String(buf, 0, bytesRead, StandardCharsets.UTF_8);
+                        } else {//HEX
+                            receivedMessage = bytes2hex(buf, bytesRead);
+                        }
+
+                        recvTextArea.appendText(socketAddress + sdf.format(new Date()) + "\r\n" + receivedMessage + "\r\n");
                         recvTextArea.positionCaret(recvTextArea.getText().length());
                     } else {//自定义协议
                         for (int i = 0; i < buf.length; i++) {
@@ -313,10 +317,11 @@ public class SampleController {
                     }
                 }
                 System.out.println("对方关闭了socket通道！");
-                closeBtn.setDisable(true);
-                openBtn.setDisable(false);
+                setFunctionDiabled(false);
+
             } catch (IOException e) {
                 e.printStackTrace();
+                setFunctionDiabled(false);
             }
 
             try {
@@ -327,8 +332,30 @@ public class SampleController {
         }
     }
 
+    /**
+     * 打印十六进制
+     * @param bytes
+     * @return
+     */
+    public static String bytes2hex(byte[] bytes, int len) {
+        StringBuilder sb = new StringBuilder();
+        String tmp;
+        sb.append("[");
+        for (int i = 0; i < len; i++) {
+            // 将每个字节与0xFF进行与运算，然后转化为10进制，然后借助于Integer再转化为16进制
+            tmp = Integer.toHexString(0xFF & bytes[i]);
+            if (tmp.length() == 1) {
+                tmp = "0" + tmp;// 只有一位的前面补个0
+            }
+            sb.append(tmp).append(" ");// 每个字节用空格断开
+        }
+        sb.delete(sb.length() - 1, sb.length());// 删除最后一个字节后面对于的空格
+        sb.append("]");
+        return sb.toString();
+    }
+
     private String[] getLocalIp() throws SocketException {
-        ArrayList<String> arrayList = new ArrayList<String>();
+        ArrayList<String> arrayList = new ArrayList<>();
         String os = System.getProperty("os.name").toLowerCase();
         if (os.contains("nix") || os.contains("nux") || os.contains("mac")) {
             // System.out.println("当前系统是 Linux");
