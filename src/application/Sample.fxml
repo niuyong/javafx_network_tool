@@ -5,175 +5,145 @@
 <?import javafx.scene.layout.*?>
 
 <HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="761.0" prefWidth="1190.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.SampleController">
-   <children>
-      <VBox prefHeight="761.0" prefWidth="1508.0">
-         <children>
-            <SplitPane dividerPositions="0.8271954674220963" orientation="VERTICAL" prefHeight="764.0" prefWidth="1034.0">
-              <items>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
-                     <children>
-                        <TextArea fx:id="recvTextArea" wrapText="true" layoutX="99.0" layoutY="54.0" prefHeight="289.0" prefWidth="418.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                     </children>
-                  </AnchorPane>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="122.0" prefWidth="418.0">
-                     <children>
-                        <TextArea fx:id="sendTextArea" layoutX="33.0" layoutY="-86.0" prefHeight="58.0" prefWidth="418.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                     </children>
-                  </AnchorPane>
-              </items>
-            </SplitPane>
-            <HBox prefHeight="100.0" prefWidth="200.0">
-               <children>
-                  <GridPane alignment="CENTER">
-                    <columnConstraints>
-                      <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                      <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                    </columnConstraints>
-                    <rowConstraints>
-                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                    </rowConstraints>
-                     <children>
-                        <Label text="发送：" />
-                        <Label text="接收：" GridPane.columnIndex="1" />
-                        <Button mnemonicParsing="false" text="复位计数" GridPane.columnIndex="3" />
-                        <Button mnemonicParsing="false" text="清空接收区" GridPane.columnIndex="4" />
-                        <Button mnemonicParsing="false" text="清空发送区" GridPane.columnIndex="5" />
-                     </children>
-                  </GridPane>
-               </children>
-            </HBox>
-         </children>
-      </VBox>
-      <VBox prefHeight="761.0" prefWidth="630.0">
-         <children>
-            <GridPane prefWidth="156.0">
-              <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-              </columnConstraints>
-              <rowConstraints>
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                  <RowConstraints maxHeight="26.0" minHeight="0.0" prefHeight="0.0" vgrow="SOMETIMES" />
-              </rowConstraints>
-               <children>
-                  <Label text="网络协议类型" />
-                  <ChoiceBox fx:id="agreement" prefWidth="150.0" GridPane.rowIndex="1">
-                     <GridPane.margin>
-                        <Insets />
-                     </GridPane.margin>
-                  </ChoiceBox>
-                  <Label fx:id="ipLabel" text="本地IP地址" GridPane.rowIndex="2" />
-                  <ChoiceBox fx:id="localIP" prefWidth="150.0" GridPane.rowIndex="3" />
-                   <TextField visible="false" fx:id="remoteIP" prefWidth="150.0" GridPane.rowIndex="3" />
-                  <Label fx:id="portLabel" text="本地端口号" GridPane.rowIndex="4" />
-                  <TextField fx:id="portField" GridPane.rowIndex="5" />
-                  <Label text="接收端编码" GridPane.rowIndex="6" />
-                  <ChoiceBox fx:id="receiveEncoding" prefWidth="150.0" GridPane.rowIndex="7" />
-                  <Label text="发送端编码" GridPane.rowIndex="8" />
-                  <ChoiceBox fx:id="sendEncoding" prefWidth="150.0" GridPane.rowIndex="9" />
-                  <CheckBox mnemonicParsing="false" text="发送间隔" GridPane.rowIndex="10" />
-                  <GridPane GridPane.rowIndex="11">
-                    <columnConstraints>
-                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                    </columnConstraints>
-                    <rowConstraints>
-                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                    </rowConstraints>
-                     <children>
-                        <ChoiceBox fx:id="timeUnit" prefHeight="23.0" prefWidth="62.0" GridPane.columnIndex="1">
-                           <GridPane.margin>
-                              <Insets left="5.0" />
-                           </GridPane.margin>
-                        </ChoiceBox>
-                        <TextField>
-                           <GridPane.margin>
-                              <Insets right="5.0" />
-                           </GridPane.margin>
-                        </TextField>
-                     </children>
-                  </GridPane>
-                  <GridPane GridPane.rowIndex="13">
-                    <columnConstraints>
-                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                    </columnConstraints>
-                    <rowConstraints>
-                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                    </rowConstraints>
-                     <children>
-                        <AnchorPane>
-                           <children>
-                              <Button fx:id="openBtn" mnemonicParsing="false" prefHeight="30.0" prefWidth="68.0" text="打开" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="0.0" />
-                           </children>
-                        </AnchorPane>
-                        <AnchorPane GridPane.columnIndex="1">
-                           <children>
-                              <Button fx:id="closeBtn" disable="true" mnemonicParsing="false" prefHeight="30.0" prefWidth="68.0" text="关闭" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                           </children>
-                        </AnchorPane>
-                     </children>
-                  </GridPane>
-                  <CheckBox fx:id="autoRecvCheckBox" mnemonicParsing="false" text="自动应答" GridPane.rowIndex="17" />
-                  <AnchorPane GridPane.rowIndex="22">
-                     <children>
-                        <Button fx:id="sendBtn" disable="true" mnemonicParsing="false" prefHeight="43.0" prefWidth="136.0" text="发送" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                     </children>
-                  </AnchorPane>
-                  <CheckBox mnemonicParsing="false" text="循环发送" GridPane.rowIndex="16" />
-                  <Label fx:id="fileimport" text="文件导入..." textFill="BLUE" underline="true" GridPane.rowIndex="18" />
-                  <GridPane GridPane.rowIndex="20">
-                    <columnConstraints>
-                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="101.0" minWidth="10.0" prefWidth="101.0" />
-                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="62.0" minWidth="10.0" prefWidth="35.0" />
-                    </columnConstraints>
-                    <rowConstraints>
-                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                    </rowConstraints>
-                     <children>
-                        <ChoiceBox fx:id="contentAgreement" prefWidth="150.0" />
-                        <Button fx:id="contentAgreementConfig" mnemonicParsing="false" text="..." GridPane.columnIndex="1">
-                           <GridPane.margin>
-                              <Insets left="10.0" />
-                           </GridPane.margin>
-                        </Button>
-                     </children>
-                  </GridPane>
-                  <Label text="文本协议" GridPane.rowIndex="19" />
-               </children>
-               <VBox.margin>
-                  <Insets />
-               </VBox.margin>
-               <padding>
-                  <Insets left="10.0" right="10.0" />
-               </padding>
+    <VBox prefHeight="761.0" prefWidth="1508.0">
+        <SplitPane dividerPositions="0.8271954674220963" orientation="VERTICAL" prefHeight="764.0" prefWidth="1034.0">
+            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+                <TextArea fx:id="recvTextArea" layoutX="99.0" layoutY="54.0" prefHeight="289.0" prefWidth="418.0" wrapText="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+            </AnchorPane>
+            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="122.0" prefWidth="418.0">
+                <TextArea fx:id="sendTextArea" layoutX="33.0" layoutY="-86.0" prefHeight="58.0" prefWidth="418.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+            </AnchorPane>
+        </SplitPane>
+        <HBox prefHeight="100.0" prefWidth="200.0">
+            <GridPane alignment="CENTER" prefHeight="49.0" prefWidth="1008.0">
+                <columnConstraints>
+                    <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                    <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                    <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                    <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                    <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                    <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                </columnConstraints>
+                <rowConstraints>
+                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                </rowConstraints>
+                <Label fx:id="sendCountLabel" text="发送：0字节" />
+                <Label fx:id="receiveCountLabel" text="接收：0字节" GridPane.columnIndex="1" />
+                <Button mnemonicParsing="false" text="复位计数" GridPane.columnIndex="3" />
+                <Button fx:id="cleanReceCountBtn" mnemonicParsing="false" text="清空接收区" GridPane.columnIndex="4" />
+                <Button fx:id="cleanSendCountBtn" mnemonicParsing="false" text="清空发送区" GridPane.columnIndex="5" />
             </GridPane>
-         </children>
-      </VBox>
-   </children>
+        </HBox>
+    </VBox>
+    <VBox prefHeight="761.0" prefWidth="630.0">
+        <GridPane prefWidth="156.0">
+            <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            </columnConstraints>
+            <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="26.0" minHeight="0.0" prefHeight="0.0" vgrow="SOMETIMES" />
+            </rowConstraints>
+            <VBox.margin>
+                <Insets />
+            </VBox.margin>
+            <padding>
+                <Insets left="10.0" right="10.0" />
+            </padding>
+            <Label text="网络协议类型" />
+            <ChoiceBox fx:id="agreement" prefWidth="150.0" GridPane.rowIndex="1">
+                <GridPane.margin>
+                    <Insets />
+                </GridPane.margin>
+            </ChoiceBox>
+            <Label fx:id="ipLabel" text="本地IP地址" GridPane.rowIndex="2" />
+            <ChoiceBox fx:id="localIP" prefWidth="150.0" GridPane.rowIndex="3" />
+            <TextField fx:id="remoteIP" prefWidth="150.0" visible="false" GridPane.rowIndex="3" />
+            <Label fx:id="portLabel" text="本地端口号" GridPane.rowIndex="4" />
+            <TextField fx:id="portField" GridPane.rowIndex="5" />
+            <Label text="接收端编码" GridPane.rowIndex="6" />
+            <ChoiceBox fx:id="receiveEncoding" prefWidth="150.0" GridPane.rowIndex="7" />
+            <Label text="发送端编码" GridPane.rowIndex="8" />
+            <ChoiceBox fx:id="sendEncoding" prefWidth="150.0" GridPane.rowIndex="9" />
+            <CheckBox mnemonicParsing="false" text="发送间隔" GridPane.rowIndex="10" />
+            <GridPane GridPane.rowIndex="11">
+                <columnConstraints>
+                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                </columnConstraints>
+                <rowConstraints>
+                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                </rowConstraints>
+                <ChoiceBox fx:id="timeUnit" prefHeight="23.0" prefWidth="62.0" GridPane.columnIndex="1">
+                    <GridPane.margin>
+                        <Insets left="5.0" />
+                    </GridPane.margin>
+                </ChoiceBox>
+                <TextField>
+                    <GridPane.margin>
+                        <Insets right="5.0" />
+                    </GridPane.margin>
+                </TextField>
+            </GridPane>
+            <GridPane GridPane.rowIndex="13">
+                <columnConstraints>
+                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                </columnConstraints>
+                <rowConstraints>
+                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                </rowConstraints>
+                <AnchorPane>
+                    <Button fx:id="openBtn" mnemonicParsing="false" prefHeight="30.0" prefWidth="68.0" text="打开" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="0.0" />
+                </AnchorPane>
+                <AnchorPane GridPane.columnIndex="1">
+                    <Button fx:id="closeBtn" disable="true" mnemonicParsing="false" prefHeight="30.0" prefWidth="68.0" text="关闭" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                </AnchorPane>
+            </GridPane>
+            <CheckBox fx:id="autoRecvCheckBox" mnemonicParsing="false" text="自动应答" GridPane.rowIndex="17" />
+            <AnchorPane GridPane.rowIndex="22">
+                <Button fx:id="sendBtn" disable="true" mnemonicParsing="false" prefHeight="43.0" prefWidth="136.0" text="发送" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+            </AnchorPane>
+            <CheckBox mnemonicParsing="false" text="循环发送" GridPane.rowIndex="16" />
+            <Label fx:id="fileimport" text="文件导入..." textFill="BLUE" underline="true" GridPane.rowIndex="18" />
+            <GridPane GridPane.rowIndex="20">
+                <columnConstraints>
+                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="101.0" minWidth="10.0" prefWidth="101.0" />
+                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="62.0" minWidth="10.0" prefWidth="35.0" />
+                </columnConstraints>
+                <rowConstraints>
+                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                </rowConstraints>
+                <ChoiceBox fx:id="contentAgreement" prefWidth="150.0" />
+                <Button fx:id="contentAgreementConfig" mnemonicParsing="false" text="..." GridPane.columnIndex="1">
+                    <GridPane.margin>
+                        <Insets left="10.0" />
+                    </GridPane.margin>
+                </Button>
+            </GridPane>
+            <Label text="文本协议" GridPane.rowIndex="19" />
+        </GridPane>
+    </VBox>
 </HBox>

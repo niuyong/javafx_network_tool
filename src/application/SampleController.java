@@ -15,6 +15,7 @@ import java.util.Enumeration;
 
 import javax.swing.JButton;
 
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
@@ -70,10 +71,20 @@ public class SampleController {
     private ChoiceBox contentAgreement;
     @FXML
     private Button contentAgreementConfig;
+    @FXML
+    private Label receiveCountLabel;
+    @FXML
+    private Label sendCountLabel;
+    @FXML
+    private Button cleanSendCountBtn;
+    @FXML
+    private Button cleanReceCountBtn;
+    private int receiveCount = 0;
+    private int sendCount = 0;
 
     private String[] agreementArray = new String[]{"TCP Server", "TCP Client"};
     private String[] timeUnitArray = new String[]{"毫秒", "秒"};
-    private String[] encodingArray = new String[]{"UTF-8", "HEX"};
+    private String[] encodingArray = new String[]{"UTF-8", "HEX", "GBK"};
     private String[] contentAgreementArray = new String[]{"无协议", "协议一", "协议二", "协议三"};
     private final SimpleDateFormat sdf = new SimpleDateFormat(" yyyy-MM-dd HH:mm:ss.SSS");
 
@@ -147,7 +158,17 @@ public class SampleController {
         sendBtn.setOnAction(actionEvent -> {
             String str = sendTextArea.getText();
             try {
-                outputStream.write(str.getBytes(StandardCharsets.UTF_8));
+                byte[] buffer = null;
+                if (receiveEncoding.getSelectionModel().getSelectedItem().equals(encodingArray[0])) {//UTF-8
+                    buffer = str.getBytes(StandardCharsets.UTF_8);
+                } else if (receiveEncoding.getSelectionModel().getSelectedItem().equals(encodingArray[1])) {//HEX
+                    buffer = str.getBytes(StandardCharsets.UTF_8);
+                } else {//GBK
+                    buffer = str.getBytes("GBK");
+                }
+                sendCount += buffer.length;
+                sendCountLabel.setText("发送：" + sendCount + "字节");
+                outputStream.write(buffer);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -172,6 +193,16 @@ public class SampleController {
         });
 
         agreement.setOnAction(e -> getChoice());
+
+        cleanReceCountBtn.setOnAction(e -> {
+            receiveCount = 0;
+            receiveCountLabel.setText("接收：0字节");
+        });
+
+        cleanSendCountBtn.setOnAction(e -> {
+            sendCount = 0;
+            sendCountLabel.setText("发送：0字节");
+        });
     }
 
     private void setFunctionDiabled(boolean disabled) {
@@ -242,7 +273,7 @@ public class SampleController {
 
     public class InputThread extends Thread {
 
-        private Socket socket;
+        private final Socket socket;
 
         public InputThread(Socket socket) {
             this.socket = socket;
@@ -280,10 +311,16 @@ public class SampleController {
                         String receivedMessage = null;
                         if (receiveEncoding.getSelectionModel().getSelectedItem().equals(encodingArray[0])) {//UTF-8
                             receivedMessage = new String(buf, 0, bytesRead, StandardCharsets.UTF_8);
-                        } else {//HEX
+                        } else if (receiveEncoding.getSelectionModel().getSelectedItem().equals(encodingArray[1])) {//HEX
                             receivedMessage = bytes2hex(buf, bytesRead);
+                        } else {//GBK
+                            receivedMessage = new String(buf, 0, bytesRead, "GBK");
                         }
 
+                        receiveCount += bytesRead;
+                        Platform.runLater(() -> {
+                            receiveCountLabel.setText("接收：" + receiveCount + "字节");
+                        });
                         recvTextArea.appendText(socketAddress + sdf.format(new Date()) + "\r\n" + receivedMessage + "\r\n");
                         recvTextArea.positionCaret(recvTextArea.getText().length());
                     } else {//自定义协议
@@ -370,7 +407,7 @@ public class SampleController {
                 Enumeration<InetAddress> addresses = netInterface.getInetAddresses();
                 while (addresses.hasMoreElements()) {
                     InetAddress address = addresses.nextElement();
-                    if (null != address && address instanceof Inet4Address) {
+                    if (address instanceof Inet4Address) {
                         arrayList.add(address.getHostAddress());
                     }
                 }
