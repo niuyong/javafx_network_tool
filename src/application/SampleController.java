@@ -264,6 +264,15 @@ public class SampleController {
 
                     new InputThread(clientSocket).start();
                 }
+            } catch (BindException e) {
+                setFunctionDiabled(false);
+                Platform.runLater(() -> {
+                    Alert alert = new Alert(AlertType.WARNING);
+                    alert.setTitle("警告");
+                    alert.setHeaderText("端口已被占用！");
+                    alert.showAndWait();
+                });
+                e.printStackTrace();
             } catch (Exception e) {
                 setFunctionDiabled(false);
                 e.printStackTrace();
