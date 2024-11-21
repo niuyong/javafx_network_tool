@@ -8,7 +8,10 @@
     <VBox prefHeight="761.0" prefWidth="1508.0">
         <SplitPane dividerPositions="0.8271954674220963" orientation="VERTICAL" prefHeight="764.0" prefWidth="1034.0">
             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
-                <TextArea fx:id="recvTextArea" layoutX="99.0" layoutY="54.0" prefHeight="289.0" prefWidth="418.0" wrapText="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                <HBox layoutX="77.0" layoutY="223.0" prefHeight="100.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <ListView prefHeight="200.0" prefWidth="200.0" />
+                    <TextArea fx:id="recvTextArea" layoutX="99.0" layoutY="54.0" prefHeight="585.0" prefWidth="872.0" wrapText="true" />
+                </HBox>
             </AnchorPane>
             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="122.0" prefWidth="418.0">
                 <TextArea fx:id="sendTextArea" layoutX="33.0" layoutY="-86.0" prefHeight="58.0" prefWidth="418.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />

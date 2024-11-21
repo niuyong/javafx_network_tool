@@ -21,14 +21,8 @@ import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
+import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -89,6 +83,7 @@ public class SampleController {
     private final SimpleDateFormat sdf = new SimpleDateFormat(" yyyy-MM-dd HH:mm:ss.SSS");
 
     private static final InetAddressValidator VALIDATOR = InetAddressValidator.getInstance();
+
     public static boolean isValidIPV4ByValidator(String inetAddress) {
         return VALIDATOR.isValidInet4Address(inetAddress);
     }
@@ -159,9 +154,9 @@ public class SampleController {
             String str = sendTextArea.getText();
             try {
                 byte[] buffer = null;
-                if (receiveEncoding.getSelectionModel().getSelectedItem().equals(encodingArray[0])) {//UTF-8
+                if (sendEncoding.getSelectionModel().getSelectedItem().equals(encodingArray[0])) {//UTF-8
                     buffer = str.getBytes(StandardCharsets.UTF_8);
-                } else if (receiveEncoding.getSelectionModel().getSelectedItem().equals(encodingArray[1])) {//HEX
+                } else if (sendEncoding.getSelectionModel().getSelectedItem().equals(encodingArray[1])) {//HEX
                     buffer = str.getBytes(StandardCharsets.UTF_8);
                 } else {//GBK
                     buffer = str.getBytes("GBK");
@@ -174,6 +169,16 @@ public class SampleController {
             }
         });
 
+        TextFormatter<String> textFormatter = new TextFormatter<>(change -> {
+            if (change.isContentChange()) {
+                if (change.getControlNewText().length() <= 5) { // 限制输入长度为10
+                    return change; // 允许输入
+                }
+                return null; // 不允许输入
+            }
+            return change; // 其他情况允许输入
+        });
+        portField.setTextFormatter(textFormatter);
         portField.setOnKeyTyped(e -> {
             String character = e.getCharacter();
             if (!character.matches("\\d")) {
@@ -242,7 +247,16 @@ public class SampleController {
                 socket.connect(socketAddress, 1000);
                 new InputThread(socket).start();
             } catch (IOException e) {
-                throw new RuntimeException(e);
+                setFunctionDiabled(false);
+                e.printStackTrace();
+                if (e instanceof SocketTimeoutException) {
+                    Platform.runLater(() -> {
+                        Alert alert = new Alert(AlertType.WARNING);
+                        alert.setTitle("警告");
+                        alert.setHeaderText("远程端口未打开！");
+                        alert.showAndWait();
+                    });
+                }
             }
         }
     }
@@ -380,6 +394,7 @@ public class SampleController {
 
     /**
      * 打印十六进制
+     *
      * @param bytes
      * @return
      */
