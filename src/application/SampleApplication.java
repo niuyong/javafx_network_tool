@@ -22,7 +22,7 @@ public class SampleApplication extends Application {
 	        Parent root = fxmlLoader.load();
 	        //如果使用 Parent root = FXMLLoader.load(...) 静态读取方法，无法获取到Controller的实例对象
 	        primaryStage.setTitle("网络工具");
-	        Scene scene = new Scene(root, 1190, 761);
+	        Scene scene = new Scene(root, 1020, 761);
 	        //加载css样式
 	        scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 	        primaryStage.setScene(scene);

@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
 import java.net.*;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
@@ -12,18 +11,17 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Enumeration;
-
-import javax.swing.JButton;
+import java.util.concurrent.atomic.AtomicReference;
 
 import javafx.application.Platform;
-import javafx.event.ActionEvent;
-import javafx.event.Event;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.layout.HBox;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import org.apache.commons.validator.routines.InetAddressValidator;
@@ -73,6 +71,9 @@ public class SampleController {
     private Button cleanSendCountBtn;
     @FXML
     private Button cleanReceCountBtn;
+    @FXML
+    private VBox clientList;
+
     private int receiveCount = 0;
     private int sendCount = 0;
 
@@ -89,7 +90,9 @@ public class SampleController {
     }
 
     private OutputStream outputStream;
+    private InputStream inputStream;
     private ServerSocket serverSocket;
+    private Socket socket;
 
     public void init(Scene scene) {
         agreement.getItems().addAll(agreementArray);
@@ -144,7 +147,21 @@ public class SampleController {
             setFunctionDiabled(false);
 
             try {
-                serverSocket.close();
+                if (inputStream != null) {
+                    inputStream.close();
+                }
+                if (outputStream != null) {
+                    outputStream.close();
+                }
+                if (agreement.getSelectionModel().getSelectedItem().equals(agreementArray[0])) {//TCP server
+                    if (serverSocket != null && !serverSocket.isClosed()) {
+                        serverSocket.close();
+                    }
+                } else if (agreement.getSelectionModel().getSelectedItem().equals(agreementArray[1])) {//TCP client
+                    if (socket != null && !socket.isClosed()) {
+                        socket.close();
+                    }
+                }
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -245,6 +262,7 @@ public class SampleController {
                 int port = Integer.parseInt(portField.getText());
                 SocketAddress socketAddress = new InetSocketAddress(remoteIP.getText(), port);
                 socket.connect(socketAddress, 1000);
+                SampleController.this.socket = socket;
                 new InputThread(socket).start();
             } catch (IOException e) {
                 setFunctionDiabled(false);
@@ -274,6 +292,24 @@ public class SampleController {
                 while (true) {
                     // 等待客户端连接
                     Socket clientSocket = serverSocket.accept();
+
+                    Platform.runLater(() -> {
+                        AnchorPane anchorPane = new AnchorPane();
+                        // 设置 AnchorPane 的 margin
+                        Insets insets = new Insets(5.0, 10.0, 5.0, 10.0);
+                        VBox.setMargin(anchorPane, insets);
+
+                        // 创建 CheckBox
+                        CheckBox checkBox = new CheckBox();
+                        String id = clientSocket.getRemoteSocketAddress().toString();
+                        checkBox.setText(id);
+                        checkBox.setId(id);
+                        checkBox.setMnemonicParsing(false);
+
+                        // 将 CheckBox 添加到 AnchorPane
+                        anchorPane.getChildren().add(checkBox);
+                        clientList.getChildren().add(anchorPane);
+                    });
                     System.out.println(sdf.format(new Date()) + " 客户端连接成功");
 
                     new InputThread(clientSocket).start();
@@ -310,7 +346,6 @@ public class SampleController {
             int startindex = 0;
 
             ByteBuffer byteBuffer = ByteBuffer.allocate(1024 * 1024 * 100);
-            InputStream inputStream = null;
             try {
                 inputStream = socket.getInputStream();
                 outputStream = socket.getOutputStream();
@@ -378,6 +413,18 @@ public class SampleController {
                 }
                 System.out.println("对方关闭了socket通道！");
                 setFunctionDiabled(false);
+
+                Platform.runLater(() -> {
+                    AtomicReference<Node> toRemove = new AtomicReference<>();
+                    clientList.getChildren().forEach(node -> {
+                        AnchorPane anchorPane = (AnchorPane) node;
+                        CheckBox checkBox = (CheckBox) anchorPane.getChildren().get(0);
+                        if (checkBox.getId().equals(socketAddress)) {
+                            toRemove.set(anchorPane);
+                        }
+                    });
+                    clientList.getChildren().remove(toRemove.get());
+                });
 
             } catch (IOException e) {
                 e.printStackTrace();
