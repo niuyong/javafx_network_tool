@@ -412,7 +412,9 @@ public class SampleController {
                     }
                 }
                 System.out.println("对方关闭了socket通道！");
-                setFunctionDiabled(false);
+                if (agreement.getSelectionModel().getSelectedItem().equals(agreementArray[1])) {//如果是TCP client
+                    setFunctionDiabled(false);
+                }
 
                 Platform.runLater(() -> {
                     AtomicReference<Node> toRemove = new AtomicReference<>();
@@ -428,11 +430,14 @@ public class SampleController {
 
             } catch (IOException e) {
                 e.printStackTrace();
-                setFunctionDiabled(false);
+                if (agreement.getSelectionModel().getSelectedItem().equals(agreementArray[1])) {//如果是TCP client
+                    setFunctionDiabled(false);
+                }
             }
 
             try {
                 inputStream.close();
+                outputStream.close();
             } catch (IOException e) {
                 e.printStackTrace();
             }
