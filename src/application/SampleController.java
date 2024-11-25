@@ -72,7 +72,11 @@ public class SampleController {
     @FXML
     private Button cleanReceCountBtn;
     @FXML
+    private Button resetNum;
+    @FXML
     private VBox clientList;
+    @FXML
+    private CheckBox sendLoopCheckBox;
 
     private int receiveCount = 0;
     private int sendCount = 0;
@@ -217,13 +221,18 @@ public class SampleController {
         agreement.setOnAction(e -> getChoice());
 
         cleanReceCountBtn.setOnAction(e -> {
-            receiveCount = 0;
-            receiveCountLabel.setText("接收：0字节");
+            recvTextArea.setText("");
         });
 
         cleanSendCountBtn.setOnAction(e -> {
+            sendTextArea.setText("");
+        });
+
+        resetNum.setOnAction(e -> {
             sendCount = 0;
             sendCountLabel.setText("发送：0字节");
+            receiveCount = 0;
+            receiveCountLabel.setText("接收：0字节");
         });
     }
 
