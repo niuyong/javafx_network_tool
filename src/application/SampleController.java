@@ -48,6 +48,8 @@ public class SampleController {
     @FXML
     private TextField remoteIP;
     @FXML
+    private TextField remotePort;
+    @FXML
     private TextArea recvTextArea;
     @FXML
     private TextArea sendTextArea;
@@ -56,9 +58,9 @@ public class SampleController {
     @FXML
     private Label fileimport;
     @FXML
-    private Label ipLabel;
+    private Label remoteIPLabel;
     @FXML
-    private Label portLabel;
+    private Label remotePortLabel;
     @FXML
     private ChoiceBox contentAgreement;
     @FXML
@@ -81,7 +83,7 @@ public class SampleController {
     private int receiveCount = 0;
     private int sendCount = 0;
 
-    private String[] agreementArray = new String[]{"TCP Server", "TCP Client"};
+    private String[] agreementArray = new String[]{"TCP Server", "TCP Client", "UDP Server", "UDP Client"};
     private String[] timeUnitArray = new String[]{"毫秒", "秒"};
     private String[] encodingArray = new String[]{"UTF-8", "HEX", "GBK"};
     private String[] contentAgreementArray = new String[]{"无协议", "协议一", "协议二", "协议三"};
@@ -129,7 +131,7 @@ public class SampleController {
                 alert.showAndWait();
                 return;
             }
-            if (portField.getText().trim().length() == 0) {
+            if (portField.getText().trim().isEmpty()) {
                 Alert alert = new Alert(AlertType.WARNING);
                 alert.setTitle("警告");
                 alert.setHeaderText("请填写端口号！");
@@ -250,15 +252,15 @@ public class SampleController {
 
     private void getChoice() {
         if (agreement.getSelectionModel().getSelectedItem().equals(agreementArray[0])) {//TCP Server
-            ipLabel.setText("本地IP地址");
-            portLabel.setText("本地端口号");
-            localIP.setVisible(true);
-            remoteIP.setVisible(false);
+            remoteIPLabel.setDisable(true);
+            remotePortLabel.setDisable(true);
+            remotePort.setDisable(true);
+            remoteIP.setDisable(true);
         } else if (agreement.getSelectionModel().getSelectedItem().equals(agreementArray[1])) {//TCP Client
-            ipLabel.setText("服务器IP地址");
-            portLabel.setText("服务器端口号");
-            localIP.setVisible(false);
-            remoteIP.setVisible(true);
+            remoteIPLabel.setDisable(false);
+            remotePortLabel.setDisable(false);
+            remotePort.setDisable(false);
+            remoteIP.setDisable(false);
         }
     }
 
